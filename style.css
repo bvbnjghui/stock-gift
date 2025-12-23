@@ -16,7 +16,8 @@ body {
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    max-width: 900px; /* Max width for better readability */
+    max-width: 900px;
+    /* Max width for better readability */
     width: 100%;
     box-sizing: border-box;
 }
@@ -36,7 +37,7 @@ h2 {
     font-size: 1.5em;
 }
 
-.input-section{
+.input-section {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
@@ -57,7 +58,8 @@ h2 {
 }
 
 .form-group label {
-    flex: 0 0 150px; /* Fixed width for labels */
+    flex: 0 0 150px;
+    /* Fixed width for labels */
     margin-right: 15px;
     font-weight: bold;
     color: #555;
@@ -74,7 +76,8 @@ input[type="file"] {
 
 input[type="text"],
 input[type="number"] {
-    flex: 1; /* Takes remaining space */
+    flex: 1;
+    /* Takes remaining space */
     padding: 10px 12px;
     border: 1px solid #dcdcdc;
     border-radius: 5px;
@@ -92,7 +95,8 @@ input[type="number"]:focus {
 .padding-control {
     display: flex;
     align-items: center;
-    gap: 5px; /* Space between buttons and input */
+    gap: 5px;
+    /* Space between buttons and input */
 }
 
 .padding-control button {
@@ -112,8 +116,10 @@ input[type="number"]:focus {
 
 .padding-control input[type="number"] {
     text-align: center;
-    width: 60px; /* Fixed width for number input */
-    flex: none; /* Override flex:1 from general input */
+    width: 60px;
+    /* Fixed width for number input */
+    flex: none;
+    /* Override flex:1 from general input */
 }
 
 .button-group {
@@ -131,7 +137,8 @@ input[type="number"]:focus {
     cursor: pointer;
     font-size: 1.1em;
     transition: background-color 0.2s, opacity 0.2s;
-    min-width: 120px; /* Consistent button width */
+    min-width: 120px;
+    /* Consistent button width */
 }
 
 .button-group button:hover:not(:disabled) {
@@ -158,7 +165,8 @@ input[type="number"]:focus {
 
 .path-display p {
     margin: 3px 0;
-    word-break: break-all; /* Break long words to fit */
+    word-break: break-all;
+    /* Break long words to fit */
 }
 
 .help-text {
@@ -168,7 +176,8 @@ input[type="number"]:focus {
 }
 
 .preview-section {
-    min-height: 350px; /* Ensure preview section has some height */
+    min-height: 350px;
+    /* Ensure preview section has some height */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -176,22 +185,28 @@ input[type="number"]:focus {
 
 .canvas-container {
     width: 100%;
-    flex-grow: 1; /* Allows container to take available vertical space */
+    flex-grow: 1;
+    /* Allows container to take available vertical space */
     border: 1px dashed #95a5a6;
     background-color: #ecf0f1;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* Important for scrollbars */
-    position: relative; /* For absolute positioning of scrollbars if needed, though Canvas handles it here */
-    min-height: 300px; /* Minimum height for the canvas area */
+    overflow: hidden;
+    /* Important for scrollbars */
+    position: relative;
+    /* For absolute positioning of scrollbars if needed, though Canvas handles it here */
+    min-height: 300px;
+    /* Minimum height for the canvas area */
 }
 
 canvas {
-    display: block; /* Remove extra space below canvas */
+    display: block;
+    /* Remove extra space below canvas */
     /* max-width: 100%;  */
     max-height: 100%;
-    background-color: white; /* Default background for the image area */
+    background-color: white;
+    /* Default background for the image area */
 }
 
 /* ========================================
@@ -247,8 +262,9 @@ canvas {
     input[type="text"],
     input[type="number"],
     input[type="file"] {
-        width: 100%;
-        font-size: 16px; /* Prevents zoom on iOS */
+        max-width: 100%;
+        font-size: 16px;
+        /* Prevents zoom on iOS */
     }
 
     .padding-control {
@@ -448,16 +464,19 @@ canvas {
 
 /* Touch device optimizations */
 @media (hover: none) and (pointer: coarse) {
+
     /* Larger touch targets for touch devices */
     button,
     input[type="file"] {
-        min-height: 44px; /* iOS recommended minimum */
+        min-height: 44px;
+        /* iOS recommended minimum */
     }
 
     input[type="text"],
     input[type="number"] {
         min-height: 44px;
-        font-size: 16px; /* Prevents zoom on iOS */
+        font-size: 16px;
+        /* Prevents zoom on iOS */
     }
 
     .padding-control button {
