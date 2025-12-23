@@ -1,0 +1,219 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f7f6;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    max-width: 900px; /* Max width for better readability */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-size: 2em;
+}
+
+h2 {
+    color: #34495e;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+.input-section{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.section-card {
+    background-color: #fdfdfd;
+    border: 1px solid #e0e6ea;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.form-group label {
+    flex: 0 0 150px; /* Fixed width for labels */
+    margin-right: 15px;
+    font-weight: bold;
+    color: #555;
+}
+
+input[type="file"] {
+    display: block;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #e9ecef;
+    cursor: pointer;
+}
+
+input[type="text"],
+input[type="number"] {
+    flex: 1; /* Takes remaining space */
+    padding: 10px 12px;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    font-size: 1em;
+    color: #333;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+.padding-control {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Space between buttons and input */
+}
+
+.padding-control button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.2s;
+}
+
+.padding-control button:hover {
+    background-color: #2980b9;
+}
+
+.padding-control input[type="number"] {
+    text-align: center;
+    width: 60px; /* Fixed width for number input */
+    flex: none; /* Override flex:1 from general input */
+}
+
+.button-group {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.button-group button {
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 25px;
+    margin: 0 10px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.2s, opacity 0.2s;
+    min-width: 120px; /* Consistent button width */
+}
+
+.button-group button:hover:not(:disabled) {
+    background-color: #27ae60;
+}
+
+.button-group button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.path-display {
+    max-height: 100px;
+    overflow-y: auto;
+    border: 1px solid #e0e6ea;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #fcfcfc;
+    margin-top: 15px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.path-display p {
+    margin: 3px 0;
+    word-break: break-all; /* Break long words to fit */
+}
+
+.help-text {
+    font-size: 0.85em;
+    color: #7f8c8d;
+    margin-top: 5px;
+}
+
+.preview-section {
+    min-height: 350px; /* Ensure preview section has some height */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.canvas-container {
+    width: 100%;
+    flex-grow: 1; /* Allows container to take available vertical space */
+    border: 1px dashed #95a5a6;
+    background-color: #ecf0f1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Important for scrollbars */
+    position: relative; /* For absolute positioning of scrollbars if needed, though Canvas handles it here */
+    min-height: 300px; /* Minimum height for the canvas area */
+}
+
+canvas {
+    display: block; /* Remove extra space below canvas */
+    /* max-width: 100%;  */
+    max-height: 100%;
+    background-color: white; /* Default background for the image area */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+    .form-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .form-group label {
+        flex: none;
+        width: auto;
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+    input[type="text"],
+    input[type="number"] {
+        width: 100%;
+    }
+    .padding-control input[type="number"] {
+        width: 80px;
+    }
+}

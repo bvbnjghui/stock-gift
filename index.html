@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A4 圖片排版工具 (網頁版)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>A4 圖片排版工具</h1>
+
+        <div class="input-section">
+            <section class="section-card">
+                <h2>選擇圖片</h2>
+                <input type="file" id="imageInput" accept="image/*" multiple>
+                <p class="help-text">請選擇 1-8 張圖片，版面會固定顯示 8 個位置。</p>
+                <div id="selectedImagesPaths" class="path-display">
+                    <!-- Selected image paths will be listed here -->
+                </div>
+            </section>
+
+            <section class="section-card">
+                <h2>輸出設定</h2>
+                <div class="form-group">
+                    <label for="outputFilename">建議輸出檔名:</label>
+                    <input type="text" id="outputFilename" value="a4_collage_web.jpg">
+                </div>
+                <div class="form-group">
+                    <label for="paddingInput">圖片間距 (像素):</label>
+                    <div class="padding-control">
+                        <input type="number" id="paddingInput" value="20" min="0">
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="button-group">
+            <button id="downloadCollage">下載排版</button>
+            <button id="printCollage">列印排版</button>
+        </div>
+
+        <section class="section-card preview-section">
+            <h2>A4 排版預覽</h2>
+            <div class="canvas-container">
+                <canvas id="collageCanvas"></canvas>
+            </div>
+            <p class="help-text">滾動滑鼠滾輪可縮放預覽，按住滑鼠左鍵拖曳可平移。</p>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
