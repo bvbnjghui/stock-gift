@@ -284,6 +284,112 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set initial cursor style
     collageCanvas.style.cursor = 'grab';
 
+    // --- Touch Support for Mobile Devices ---
+
+    let touchStartDistance = 0;
+    let touchStartZoom = 1.0;
+    let isTouchDragging = false;
+    let touchLastX = 0;
+    let touchLastY = 0;
+
+    // Helper function to get distance between two touch points
+    function getTouchDistance(touch1, touch2) {
+        const dx = touch1.clientX - touch2.clientX;
+        const dy = touch1.clientY - touch2.clientY;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    collageCanvas.addEventListener('touchstart', (event) => {
+        if (!currentCollageImage) return;
+
+        if (event.touches.length === 2) {
+            // Two finger pinch to zoom
+            event.preventDefault();
+            touchStartDistance = getTouchDistance(event.touches[0], event.touches[1]);
+            touchStartZoom = zoomLevel;
+            isTouchDragging = false;
+        } else if (event.touches.length === 1) {
+            // Single finger drag
+            isTouchDragging = true;
+            touchLastX = event.touches[0].clientX;
+            touchLastY = event.touches[0].clientY;
+        }
+    });
+
+    collageCanvas.addEventListener('touchmove', (event) => {
+        if (!currentCollageImage) return;
+
+        if (event.touches.length === 2 && touchStartDistance > 0) {
+            // Pinch to zoom
+            event.preventDefault();
+            const currentDistance = getTouchDistance(event.touches[0], event.touches[1]);
+            const scale = currentDistance / touchStartDistance;
+            
+            const minZoom = 0.2;
+            const maxZoom = 5.0;
+            zoomLevel = Math.max(minZoom, Math.min(maxZoom, touchStartZoom * scale));
+            
+            updateMainPreviewDisplay();
+        } else if (event.touches.length === 1 && isTouchDragging) {
+            // Single finger drag
+            event.preventDefault();
+            const dx = event.touches[0].clientX - touchLastX;
+            const dy = event.touches[0].clientY - touchLastY;
+            
+            canvasContainer.scrollLeft -= dx;
+            canvasContainer.scrollTop -= dy;
+            
+            touchLastX = event.touches[0].clientX;
+            touchLastY = event.touches[0].clientY;
+        }
+    });
+
+    collageCanvas.addEventListener('touchend', (event) => {
+        if (event.touches.length < 2) {
+            touchStartDistance = 0;
+        }
+        if (event.touches.length === 0) {
+            isTouchDragging = false;
+        }
+    });
+
+    collageCanvas.addEventListener('touchcancel', () => {
+        touchStartDistance = 0;
+        isTouchDragging = false;
+    });
+
+    // --- Window Resize Handler for Responsive Behavior ---
+
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        // Debounce resize events to avoid excessive recalculations
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            if (currentCollageImage) {
+                // Recalculate base preview size on window resize
+                const originalCollageWidth = currentCollageImage.naturalWidth;
+                const originalCollageHeight = currentCollageImage.naturalHeight;
+
+                const containerRect = canvasContainer.getBoundingClientRect();
+                let frameWidth = containerRect.width;
+                let frameHeight = containerRect.height;
+
+                if (frameWidth <= 0 || frameHeight <= 0) {
+                    frameWidth = 800;
+                    frameHeight = 450;
+                }
+
+                const scaleRatioFit = Math.min(frameWidth / originalCollageWidth, frameHeight / originalCollageHeight);
+                basePreviewWidth = Math.floor(originalCollageWidth * scaleRatioFit);
+                basePreviewHeight = Math.floor(originalCollageHeight * scaleRatioFit);
+
+                // Reset zoom level on resize for better UX
+                zoomLevel = 1.0;
+                updateMainPreviewDisplay();
+            }
+        }, 250); // Wait 250ms after resize stops
+    });
+
 
     // --- Download Function ---
 
