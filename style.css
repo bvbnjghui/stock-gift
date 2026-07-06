@@ -263,18 +263,11 @@ input[type="number"]:focus {
 .canvas-container {
     width: 100%;
     flex-grow: 1;
-    /* Allows container to take available vertical space */
     border: 1px dashed #95a5a6;
     background-color: #ecf0f1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    /* Important for scrollbars */
+    overflow: auto;
     position: relative;
-    /* For absolute positioning of scrollbars if needed, though Canvas handles it here */
     min-height: 300px;
-    /* Minimum height for the canvas area */
 }
 
 canvas {
