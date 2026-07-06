@@ -34,6 +34,45 @@ let metadataMap = {};
         });
     });
 
+    // --- Help Modal ---
+    const helpBtn = document.getElementById('helpBtn');
+    const helpModal = document.getElementById('helpModal');
+    const helpModalClose = document.getElementById('helpModalClose');
+
+    function openHelpModal() {
+        if (helpModal) {
+            helpModal.style.display = 'flex';
+        }
+    }
+
+    function closeHelpModal() {
+        if (helpModal) {
+            helpModal.style.display = 'none';
+        }
+    }
+
+    if (helpBtn) {
+        helpBtn.addEventListener('click', openHelpModal);
+    }
+
+    if (helpModalClose) {
+        helpModalClose.addEventListener('click', closeHelpModal);
+    }
+
+    if (helpModal) {
+        helpModal.addEventListener('click', (event) => {
+            if (event.target === helpModal) {
+                closeHelpModal();
+            }
+        });
+    }
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && helpModal && helpModal.style.display === 'flex') {
+            closeHelpModal();
+        }
+    });
+
     // --- Metadata CSV Loading ---
     metadataFile.addEventListener('change', async (event) => {
         const file = event.target.files[0];

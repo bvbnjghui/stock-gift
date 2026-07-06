@@ -12,6 +12,29 @@
 <body>
     <div class="container">
         <h1>A4 圖片排版工具</h1>
+        <div class="header-actions">
+            <button type="button" id="helpBtn">使用說明</button>
+        </div>
+
+        <div id="helpModal" class="modal-overlay" style="display:none;">
+            <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="helpModalTitle">
+                <div class="modal-header">
+                    <h2 id="helpModalTitle">使用說明</h2>
+                    <button type="button" class="modal-close" id="helpModalClose">✕</button>
+                </div>
+                <div class="modal-body">
+                    <ol>
+                        <li>在「選擇圖片」區塊選擇 1-8 張圖片。</li>
+                        <li>在「輸出設定」調整輸出名稱與圖片間距。</li>
+                        <li>如有中繼資料，可在「代號資料 (CSV)」上傳 CSV 檔案。</li>
+                        <li>在「股票代號輸入」為每張圖片輸入對應代號，以便配對中繼資料。</li>
+                        <li>在「A4 排版預覽」區域使用滑鼠滾輪縮放、拖曳平移檢視。</li>
+                        <li>確認無誤後，點擊「下載排版」儲存 JPG，或點擊「列印排版」直接印出。</li>
+                    </ol>
+                    <p class="help-text">小提示：不常用的區塊可點擊標題列收合，讓畫面更整潔。</p>
+                </div>
+            </div>
+        </div>
 
         <div class="input-section">
             <section class="section-card collapsible">
