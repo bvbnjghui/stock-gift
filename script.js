@@ -7,14 +7,55 @@ document.addEventListener('DOMContentLoaded', () => {
     const printCollageBtn = document.getElementById('printCollage'); // Print button remains
     const collageCanvas = document.getElementById('collageCanvas');
     const ctx = collageCanvas.getContext('2d');
-    const canvasContainer = collageCanvas.parentElement; // The div wrapping the canvas
-
-    let selectedFiles = []; // Stores File objects
+    const metadataFile = document.getElementById('metadataFile');
+    
+    let tickerInputs = [];
+let metadataMap = {};
     let loadedImages = []; // Stores Image objects (from HTMLImageElement)
     let currentCollageImage = null; // Stores the final generated collage Image object
     let zoomLevel = 1.0;
     let basePreviewWidth = 0;
     let basePreviewHeight = 0;
+
+    const canvasContainer = collageCanvas.parentElement; // The div wrapping the canvas
+
+    let selectedFiles = []; // Stores File objects
+    // --- Metadata CSV Loading ---
+    metadataFile.addEventListener('change', async (event) => {
+        const file = event.target.files[0];
+        if (!file) {
+            metadataMap = {};
+            return;
+        }
+
+        // Read raw bytes and decode with UTF-8, fallback to Big5 if needed
+        const buffer = await file.arrayBuffer();
+        let decoder = new TextDecoder('utf-8');
+        let text = decoder.decode(buffer);
+        // If UTF-8 decoding produced replacement characters, try Big5 encoding (common for Chinese Windows CSV)
+        if (text.includes('�')) {
+            try {
+                decoder = new TextDecoder('big5');
+                text = decoder.decode(buffer);
+            } catch (e) {
+                console.warn('Big5 decoding failed, using UTF-8');
+            }
+        }
+        // Remove potential UTF-8 BOM and split into lines
+        const lines = text.replace(/^\uFEFF/, '').split(/\r?\n/).filter(l => l.trim());
+        metadataMap = {};
+        lines.forEach((line, idx) => {
+            if (idx === 0 && line.toLowerCase().includes('ticker')) return;
+            const parts = line.split(',');
+            if (parts.length >= 3) {
+                const ticker = parts[0].trim().toUpperCase();
+                const time = parts[1].trim();
+                const location = parts[2].trim();
+                metadataMap[ticker] = {time, location};
+            }
+        });
+        console.log('Metadata loaded', metadataMap);
+    });
 
     // A4 dimensions at 300 DPI (landscape) - in pixels
     const A4_WIDTH_PX = 3508;
@@ -39,7 +80,9 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedFiles = Array.from(event.target.files);
         
         if (selectedFiles.length === 0) {
-            selectedImagesPathsDiv.innerHTML = '<p>請選擇 1-8 張圖片。</p>';
+            if (selectedImagesPathsDiv) {
+                selectedImagesPathsDiv.innerHTML = '<p>請選擇 1-8 張圖片。</p>';
+            }
             loadedImages = [];
             currentCollageImage = null;
             disableActionButtons(true);
@@ -52,23 +95,46 @@ document.addEventListener('DOMContentLoaded', () => {
             selectedFiles = selectedFiles.slice(0, 8);
         }
 
-        selectedImagesPathsDiv.innerHTML = '';
+        if (selectedImagesPathsDiv) {
+            selectedImagesPathsDiv.innerHTML = '';
+        }
         loadedImages = []; // Clear previous loaded images
 
         // Load images
         const loadingPromises = selectedFiles.map((file, index) => {
-            selectedImagesPathsDiv.innerHTML += `<p>${index + 1}. ${file.name}</p>`;
+            if (selectedImagesPathsDiv) {
+                selectedImagesPathsDiv.innerHTML += `<p>${index + 1}. ${file.name}</p>`;
+            }
             return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        loadedImages[index] = img; // Store in correct order
-                        resolve();
+            // After images are loaded, create ticker input fields for each image
+        const tickerInputsDiv = document.getElementById('tickerInputs');
+        tickerInputsDiv.innerHTML = '';
+        tickerInputs = new Array(selectedFiles.length).fill(''); // reset array
+        selectedFiles.forEach((file, idx) => {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.placeholder = `代號 ${idx + 1} (${file.name})`;
+            input.className = 'ticker-field';
+            input.style.marginBottom = '8px';
+            input.addEventListener('input', (e) => {
+                // Store uppercase ticker and refresh preview
+                tickerInputs[idx] = e.target.value.trim().toUpperCase();
+                generateAndShowPreview();
+            });
+            tickerInputsDiv.appendChild(input);
+            tickerInputsDiv.appendChild(document.createElement('br'));
+        });
+
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            loadedImages[index] = img; // Store in correct order
+                            resolve();
+                        };
+                        img.src = e.target.result;
                     };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
+                    reader.readAsDataURL(file);
             });
         });
 
@@ -144,6 +210,25 @@ document.addEventListener('DOMContentLoaded', () => {
             const finalPasteY = blockStartY + pasteYOffsetInBlock;
 
             tempCtx.drawImage(img, finalPasteX, finalPasteY, newImgWidth, newImgHeight);
+                        // Draw metadata overlay if available (using a font that supports Chinese characters)
+            const rawTicker = tickerInputs[i] || selectedFiles[i].name.replace(/\.[^/.]+$/, '').toUpperCase();
+            const meta = metadataMap[rawTicker];
+            if (meta) {
+                const overlayText = `${meta.time} ${meta.location}`;
+                tempCtx.fillStyle = 'black';
+                const fontSize = 24;
+                tempCtx.font = `${fontSize}px "Noto Sans TC", sans-serif`;
+                tempCtx.textBaseline = 'top';
+                // Measure text width for horizontal centering within the image block
+                const textMetrics = tempCtx.measureText(overlayText);
+                const textWidth = textMetrics.width;
+                const bleedMargin = 20; // extra space to avoid cut‑off when printing
+                const textX = blockStartX + (imgBlockWidth - textWidth) / 2;
+                const textY = blockStartY + bleedMargin;
+                tempCtx.fillText(overlayText, textX, textY);
+            } else {
+                console.warn('No metadata for ticker', rawTicker);
+            }
         }
 
         // Convert the temporary canvas to an Image object for consistent handling

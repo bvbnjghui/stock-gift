@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A4 圖片排版工具 (網頁版)</title>
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -16,10 +17,9 @@
             <section class="section-card">
                 <h2>選擇圖片</h2>
                 <input type="file" id="imageInput" accept="image/*" multiple>
+    <div id="selectedImagesPaths" style="margin-top:8px; color:#555; font-size:0.9rem;"></div>
                 <p class="help-text">請選擇 1-8 張圖片，版面會固定顯示 8 個位置。</p>
-                <div id="selectedImagesPaths" class="path-display">
-                    <!-- Selected image paths will be listed here -->
-                </div>
+
             </section>
 
             <section class="section-card">
@@ -35,7 +35,17 @@
                     </div>
                 </div>
             </section>
-        </div>
+        <section class="section-card">
+    <h2>代號資料 (CSV)</h2>
+    <input type="file" id="metadataFile" accept=".csv" />
+    <p class="help-text">請上傳包含代號、時間、地點的 CSV 檔案，欄位順序為 ticker,time,location。</p>
+</section>
+        <!-- Ticker input for each selected image -->
+        <section class="section-card">
+            <h2>股票代號輸入</h2>
+            <div id="tickerInputs" class="ticker-inputs"></div>
+        </section>
+</div>
 
         <div class="button-group">
             <button id="downloadCollage">下載排版</button>
