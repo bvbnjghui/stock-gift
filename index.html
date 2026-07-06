@@ -14,16 +14,24 @@
         <h1>A4 圖片排版工具</h1>
 
         <div class="input-section">
-            <section class="section-card">
-                <h2>選擇圖片</h2>
+            <section class="section-card collapsible">
+                <div class="section-header">
+                    <h2>選擇圖片</h2>
+                    <button type="button" class="collapse-toggle" aria-expanded="true"></button>
+                </div>
+                <div class="section-content">
                 <input type="file" id="imageInput" accept="image/*" multiple>
     <div id="selectedImagesPaths" style="margin-top:8px; color:#555; font-size:0.9rem;"></div>
                 <p class="help-text">請選擇 1-8 張圖片，版面會固定顯示 8 個位置。</p>
-
+                </div>
             </section>
 
-            <section class="section-card">
-                <h2>輸出設定</h2>
+            <section class="section-card collapsible">
+                <div class="section-header">
+                    <h2>輸出設定</h2>
+                    <button type="button" class="collapse-toggle" aria-expanded="true"></button>
+                </div>
+                <div class="section-content">
                 <div class="form-group">
                     <label for="outputFilename">輸出檔名:</label>
                     <input type="text" id="outputFilename" value="a4_collage_web.jpg">
@@ -34,16 +42,27 @@
                         <input type="number" id="paddingInput" value="20" min="0">
                     </div>
                 </div>
+                </div>
             </section>
-        <section class="section-card">
-    <h2>代號資料 (CSV)</h2>
+        <section class="section-card collapsible">
+            <div class="section-header">
+                <h2>代號資料 (CSV)</h2>
+                <button type="button" class="collapse-toggle" aria-expanded="true"></button>
+            </div>
+            <div class="section-content">
     <input type="file" id="metadataFile" accept=".csv" />
     <p class="help-text">請上傳包含代號、時間、地點的 CSV 檔案，欄位順序為 ticker,time,location。</p>
-</section>
+    </div>
+        </section>
         <!-- Ticker input for each selected image -->
-        <section class="section-card">
-            <h2>股票代號輸入</h2>
+        <section class="section-card collapsible">
+            <div class="section-header">
+                <h2>股票代號輸入</h2>
+                <button type="button" class="collapse-toggle" aria-expanded="true"></button>
+            </div>
+            <div class="section-content">
             <div id="tickerInputs" class="ticker-inputs"></div>
+            </div>
         </section>
 </div>
 
@@ -52,12 +71,16 @@
             <button id="printCollage">列印排版</button>
         </div>
 
-        <section class="section-card preview-section">
-            <h2>A4 排版預覽</h2>
+        <section class="section-card preview-section collapsible">
+            <div class="section-header">
+                <h2>A4 排版預覽</h2>
+            </div>
+            <div class="section-content">
             <div class="canvas-container">
                 <canvas id="collageCanvas"></canvas>
             </div>
             <p class="help-text">滾動滑鼠滾輪可縮放預覽，按住滑鼠左鍵拖曳可平移。</p>
+            </div>
         </section>
     </div>
 

@@ -20,6 +20,20 @@ let metadataMap = {};
     const canvasContainer = collageCanvas.parentElement; // The div wrapping the canvas
 
     let selectedFiles = []; // Stores File objects
+
+    // --- Section Collapse/Expand ---
+    document.querySelectorAll('.section-header').forEach(header => {
+        header.addEventListener('click', () => {
+            const card = header.closest('.section-card');
+            card.classList.toggle('collapsed');
+            const isExpanded = !card.classList.contains('collapsed');
+            const toggle = header.querySelector('.collapse-toggle');
+            if (toggle) {
+                toggle.setAttribute('aria-expanded', isExpanded);
+            }
+        });
+    });
+
     // --- Metadata CSV Loading ---
     metadataFile.addEventListener('change', async (event) => {
         const file = event.target.files[0];
